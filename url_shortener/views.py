@@ -1,12 +1,11 @@
 from django.shortcuts import get_object_or_404, redirect
 from ipware import get_client_ip
 from rest_framework import status
-from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import RetrieveModelMixin
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import GenericViewSet, ModelViewSet
+from rest_framework.viewsets import GenericViewSet
 
 from url_shortener.models import Shortener
 from url_shortener.serializers import (
