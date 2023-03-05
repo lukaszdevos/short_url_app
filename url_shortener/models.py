@@ -15,6 +15,9 @@ class Shortener(models.Model):
         max_length=10, unique=True, default=generate_short_url, db_index=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    views = models.PositiveIntegerField(default=0)
+    created_by_ip = models.CharField(null=True, blank=True, max_length=15)
+    created_by_user_agent = models.CharField(null=True, blank=True, max_length=255)
 
     def __str__(self):
         return f"{self.id} - {self.created_at}"

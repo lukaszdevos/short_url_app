@@ -3,6 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
+from url_shortener.serializers import UrlShortenerStatisticSerializer
 from url_shortener.tests.url_shortener_factories import ShortenerFactory, UrlFactory
 
 
@@ -42,3 +43,25 @@ class TestUrlShortener(TestCase):
         response = self.client.get(url_get)
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_redirection_counter(self):
+        shortener = ShortenerFactory.create()
+
+        url_get = reverse("url_shortner:shortener_retrieve", args=[shortener.short_url])
+        self.client.get(url_get)
+        shortener.refresh_from_db()
+
+        expected_result = 1
+        self.assertEqual(shortener.views, expected_result)
+
+    def test_retrieve_statistics(self):
+        shortener = ShortenerFactory.create()
+
+        url_get = reverse(
+            "url_shortner:shortener_statistic_retrieve", args=[shortener.short_url]
+        )
+        response = self.client.get(url_get)
+
+        expected_result = UrlShortenerStatisticSerializer(shortener).data
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json(), expected_result)

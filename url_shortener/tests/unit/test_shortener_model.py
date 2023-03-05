@@ -19,4 +19,6 @@ class TestShortener(TestCase):
         )
 
     def test_absolute_short_url(self):
-        self.assertEqual(self.shortener.absolute_short_url, f"/shortener/{self.shortener.short_url}/")
+        self.assertEqual(
+            self.shortener.absolute_short_url, f"/shortener/{self.shortener.short_url}/"
+        )
